@@ -1,12 +1,14 @@
-Using [Bespoke Curator](https://github.com/bespokelabsai/curator) to generate datasets for the Stratos-R1 model.
+# Using [Bespoke Curator](https://github.com/bespokelabsai/curator) to generate datasets for the Stratos-R1 model.
 
 ## Setup
 
+Assuming we are in the top-level directory, install the dependencies:
+
 ```bash
-pip install -r requirements.txt
+pip install -r skythought/tools/requirements.txt
 ```
 
-## Generate reasoning traces from r1 using Curator
+## Generate reasoning traces from DeepSeek-R1 using Curator
 
 Our final dataset contains the following subsets:
 
@@ -20,23 +22,23 @@ Run the following scripts to generate reasoning traces and filter out incorrect 
 ### Numina
 
 ```bash
-python generate_numina_data.py
+python skythought/tools/curator/generate_numina_data.py
 ```
 
 ### APPS
 
 ```bash
-python generate_apps_data.py
+python skythought/tools/curator/generate_apps_data.py
 ```
 
 ### TACO
 
 ```bash
-python generate_taco_data.py
+python skythought/tools/curator/generate_taco_data.py
 ```
 
 ### Combine the datasets
 
 ```bash
-python combine_data.py
+python skythought/tools/curator/combine_data.py
 ```
