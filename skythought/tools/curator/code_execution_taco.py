@@ -1,18 +1,16 @@
-from bespokelabs import curator
-from datasets import load_dataset, Dataset
-import json
-from util.taco.testing_util import run_test as taco_run_test
-import copy
+from datasets import Dataset
 import multiprocessing
-from multiprocessing import Manager, Pool
+from multiprocessing import Pool
 import numpy as np
 import re
-import math
-import os
 from tqdm import tqdm
-from functools import partial
+import json
+import copy
 import timeout_decorator
-
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
+from skythought.tools.util.taco.testing_util import run_test as taco_run_test
 
 @timeout_decorator.timeout(10)
 def run_test_with_timeout(problem, generation):
@@ -24,6 +22,7 @@ def run_test_with_timeout(problem, generation):
         return False
 
 def check_correctness(problem, generation):
+    """Check if the code is correct."""
     try:
         return run_test_with_timeout(problem, generation)
     except timeout_decorator.TimeoutError:
@@ -33,38 +32,68 @@ def check_correctness(problem, generation):
         print(f"Error in check_correctness: {e}")
         return False
 
-def has_code(response):
-    pattern = r"```(?:[a-zA-Z]*)\n(.*?)```"
-    matches = re.findall(pattern, response, re.DOTALL)
-    return matches
-
-def process_single_row(row):
-    """Process a single row of the dataset"""
-    try:
-        code_filter_result = has_code(row.get('deepseek_solution', ''))
+def has_code(response: str) -> list:
+    """
+    Check if the response contains code blocks.
+    
+    Args:
+        response (str): The text response to check
         
-        if len(code_filter_result) == 0:
+    Returns:
+        list: List of code blocks found in the response
+    """
+    pattern = r"```(?:[a-zA-Z]*)\n(.*?)```"
+    return re.findall(pattern, response, re.DOTALL)
+
+def process_single_row(row: dict) -> dict:
+    """
+    Process a single row of the dataset.
+    
+    Args:
+        row (dict): Dataset row containing solution and metadata
+        
+    Returns:
+        dict: Processed row with correctness evaluation
+    """
+    try:
+        code_blocks = has_code(row.get('deepseek_solution', ''))
+        
+        if not code_blocks:
+            return {
+                **row,
+                "correctness": False,
+                "reason": "Does not contain code component."
+            }
+            
+        last_code = code_blocks[-1]
+        if check_correctness(row, last_code):
+            row["correctness"] = True
+            row["reason"] = ""
+        else:
             row["correctness"] = False
-            row["reason"] = "Does not contain code component."
-        else:    
-            last_code = code_filter_result[-1]
-            curr_res = check_correctness(row, last_code)
-            if curr_res:
-                row["correctness"] = True
-                row["reason"] = ""
-            else:
-                row["correctness"] = False
-                row["reason"] = "Code is incorrect."
+            row["reason"] = "Code is incorrect."
         
         return row        
     
     except Exception as e:
-        row['correctness'] = False
-        row['reason'] = f"Processing error: {str(e)}"
-        return row
+        return {
+            **row,
+            'correctness': False,
+            'reason': f"Processing error: {str(e)}"
+        }
 
-def process_dataset_parallel(df, num_cpus=None, batch_size=1024):
-    """Process the dataset in parallel using multiple CPUs"""
+def process_dataset_parallel(df: Dataset, num_cpus: int = None, batch_size: int = 1024) -> Dataset:
+    """
+    Process the dataset in parallel using multiple CPUs.
+    
+    Args:
+        df (Dataset): Input dataset to process
+        num_cpus (int, optional): Number of CPUs to use. Defaults to max CPUs - 1
+        batch_size (int, optional): Size of each processing batch. Defaults to 1024
+        
+    Returns:
+        Dataset: Processed dataset with correctness evaluations
+    """
     if num_cpus is None:
         num_cpus = max(1, multiprocessing.cpu_count() - 1)
     
@@ -92,22 +121,3 @@ def process_dataset_parallel(df, num_cpus=None, batch_size=1024):
         print(f"Total correct so far: {sum(1 for r in all_results if r.get('correctness', False))}/{len(all_results)}\n")
     
     return Dataset.from_list(all_results)
-
-
-if __name__ == '__main__':
-    # Set the maximum number of open files limit
-    import resource
-    soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
-    resource.setrlimit(resource.RLIMIT_NOFILE, (hard, hard))
-    
-    # Load dataset
-    print("Loading dataset...")
-    df = load_dataset("bespokelabs/sky-t1-taco-test-unfiltered")
-
-    # Process dataset in parallel
-    processed_df = process_dataset_parallel(df['train'])
-    
-
-    # processed_df.save_to_disk('final_processed_dataset')
-    processed_df.push_to_hub('bespokelabs/sky-t1-taco-train-rejection-sampled-shreyas')
-    print("Processing complete! Final dataset saved.")
