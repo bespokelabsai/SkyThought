@@ -67,5 +67,6 @@ MODEL_TO_NAME = {
     "openai/o1-mini": "o1-mini",
     "openai/o1-preview": "o1-preview",  
     "openai/gpt-4o-mini": "gpt-4o-mini",
-    "meta-llama/Llama-3.2-1B-Instruct": "Llama-3.2-1B-Instruct"
+    "meta-llama/Llama-3.2-1B-Instruct": "Llama-3.2-1B-Instruct",
+    "NovaSky-AI/Sky-T1-32B-Preview-5k-1-epoch": "Sky-T1-32B-Preview",
 }
