@@ -647,8 +647,8 @@
       "assistant_tag": "assistant"
     }
   },
-  "Stratos-R1": {
-    "hf_hub_url": "bespokelabs/Stratos-R1_data_17k",
+  "Stratos-R1-Incomplete": {
+    "hf_hub_url": "https://huggingface.co/datasets/bespokelabs/stratos-r1-incomplete",
     "formatting": "sharegpt",
     "columns": {
       "messages": "conversations",
