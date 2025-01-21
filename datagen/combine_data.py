@@ -9,8 +9,8 @@ def map_numina_conversations(x):
     return {
         "system": SKY_T1_FIXED,
         "conversations": [
-            {"from": "user", "content": user_message},
-            {"from": "assistant", "content": assistant_message},
+            {"from": "user", "value": user_message},
+            {"from": "assistant", "value": assistant_message},
         ],
     }
 
@@ -44,8 +44,8 @@ def map_apps_conversations(x):
     return {
         "system": SKY_T1_FIXED,
         "conversations": [
-            {"from": "user", "content": user_message},
-            {"from": "assistant", "content": assistant_message},
+            {"from": "user", "value": user_message},
+            {"from": "assistant", "value": assistant_message},
         ],
     }
 
@@ -55,11 +55,109 @@ apps_conversations_correct = load_dataset(
 apps_conversations = apps_conversations_correct.map(
     map_apps_conversations, remove_columns=apps_conversations_correct.column_names)
 
+def map_still2(x):
+    return {
+        "system": SKY_T1_FIXED,
+        "conversations": [
+            {"from": "user", "value": x["question"]},
+            {"from": "assistant", "value": x["combined_text"]},
+        ],
+    }
 still2 = load_dataset("RUC-AIBOX/long_form_thought_data_5k", trust_remote_code=True)["train"]
 still2_columns = still2.column_names
 still2 = still2.filter(
-    lambda x: x["domain"] in ["puzzle", "physics", "biology", "chemistry"]).remove_columns(still2_columns)
+    lambda x: x["domain"] in ["puzzle", "physics", "biology", "chemistry"]).map(
+    map_still2, remove_columns=still2_columns)
 
+def validate_row(row, idx):
+    """
+    Validates a single row of the dataset.
+    
+    Args:
+        row: Dataset row to validate
+        idx: Index of the row for error reporting
+        
+    Returns:
+        list: List of error messages if any were found, empty list if valid
+    """
+    errors = []
+    
+    # Check system field exists
+    if "system" not in row:
+        errors.append(f"Row {idx}: Missing 'system' field")
+        return errors
+        
+    # Check conversations field exists and has correct length
+    if "conversations" not in row:
+        errors.append(f"Row {idx}: Missing 'conversations' field")
+        return errors
+        
+    convs = row["conversations"]
+    if len(convs) != 2:
+        errors.append(f"Row {idx}: Expected 2 conversations, found {len(convs)}")
+        return errors
+        
+    # Validate first message (user)
+    if convs[0].get("from") != "user":
+        errors.append(f"Row {idx}: First message must be from 'user', found '{convs[0].get('from')}'")
+    if not convs[0].get("value"):
+        errors.append(f"Row {idx}: User message value is empty")
+            
+    # Validate second message (assistant)
+    if convs[1].get("from") != "assistant":
+        errors.append(f"Row {idx}: Second message must be from 'assistant', found '{convs[1].get('from')}'")
+            
+    assistant_msg = convs[1].get("value", "")
+    if not assistant_msg:
+        errors.append(f"Row {idx}: Assistant message value is empty")
+        return errors
+            
+    # Check for required tags in assistant message
+    required_tags = [
+        "<|begin_of_thought|>",
+        "<|end_of_thought|>",
+        "<|begin_of_solution|>",
+        "<|end_of_solution|>"
+    ]
+    for tag in required_tags:
+        if tag not in assistant_msg:
+            errors.append(f"Row {idx}: Missing required tag '{tag}' in assistant message")
+    
+    return errors
+
+def validate_final_dataset(dataset):
+    """
+    Validates that each row in the dataset meets the required format using map.
+    
+    Args:
+        dataset: HuggingFace dataset to validate
+        
+    Returns:
+        bool: True if dataset is valid, False otherwise
+        list: List of error messages if any were found
+    """
+    validation_results = dataset.map(
+        lambda x, idx: {"errors": validate_row(x, idx)},
+        with_indices=True,
+        remove_columns=dataset.column_names
+    )
+    
+    all_errors = []
+    for result in validation_results:
+        all_errors.extend(result["errors"])
+    
+    is_valid = len(all_errors) == 0
+    return is_valid, all_errors
+
+# Add validation before pushing to hub
 final_dataset = concatenate_datasets([numina_conversations, apps_conversations, still2])
 
+# Validate the dataset
+is_valid, validation_errors = validate_final_dataset(final_dataset)
+
+if not is_valid:
+    print("Dataset validation failed!")
+    print("\n".join(validation_errors))
+    raise ValueError("Dataset validation failed")
+    
 final_dataset.push_to_hub("bespokelabs/stratos-r1-incomplete", private=True)
