@@ -647,8 +647,22 @@
       "assistant_tag": "assistant"
     }
   },
+  "Stratos-R1-Incomplete": {
+    "hf_hub_url": "bespokelabs/stratos-r1-incomplete",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "system": "system"
+    },
+    "tags": {
+      "role_tag": "from",
+      "content_tag": "value",
+      "user_tag": "user",
+      "assistant_tag": "assistant"
+    }
+  },
   "Stratos-R1": {
-    "hf_hub_url": "bespokelabs/Stratos-R1_data_17k",
+    "hf_hub_url": "bespokelabs/stratos-r1",
     "formatting": "sharegpt",
     "columns": {
       "messages": "conversations",
