@@ -102,7 +102,7 @@ numina_162k_olympiads_problems_response.push_to_hub("bespokelabs/sky-t1-numina-o
 
 all_subsets = concatenate_datasets([numina_162k_amc_aime_problems_response, numina_162k_math_problems_response, numina_162k_olympiads_problems_response])
 
-# Filter correct answers and calculate accuracy based on string matching. This gives ~25% accuracy.
+# FIRST APPROACH: Filter correct answers and calculate accuracy based on string matching. This gives ~25% accuracy.
 # rejected_sampled_subsets = all_subsets.filter(lambda x: math_equal(x["ground_truth_final_answer"], x["deepseek_final_answer"]), num_proc=30)
 # total_questions = len(all_subsets)
 # correct_count = len(rejected_sampled_subsets)
@@ -111,7 +111,7 @@ all_subsets = concatenate_datasets([numina_162k_amc_aime_problems_response, numi
 # rejected_sampled_subsets.push_to_hub("bespokelabs/sky-t1-numina-rejection-sampled", private=True)
 # print(f"Accuracy: {correct_count}/{total_questions} ({accuracy:.2%})")
 
-# Filter correct answers and calculate accuracy based on judge. This gives ~73% accuracy.
+# SECOND APPROACH: Filter correct answers and calculate accuracy based on judge. This gives ~73% accuracy.
 judge = Judge(model_name="gpt-4o-mini")
 judge_results = judge(all_subsets)
 correct_answers = judge_results.filter(lambda x: x["correct"])
@@ -121,7 +121,7 @@ accuracy = correct_count / total_questions
 judge_results.push_to_hub("bespokelabs/sky-t1-numina-rejection-sampled", private=True)
 print(f"Accuracy: {correct_count}/{total_questions} ({accuracy:.2%})")
 
-# # # # # Optionally print some answers for inspection
+# FOR DEBUGGING: Print some answers for inspection
 # for i, item in enumerate(judge_results.filter(lambda x: x["correct"] and (x["deepseek_final_answer"] != x["ground_truth_final_answer"])).take(10)):
 #     print(f"\nQuestion {i+1}:")
 #     print(f"Problem: {item['problem']}")
