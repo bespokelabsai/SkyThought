@@ -84,6 +84,7 @@ MODEL_TO_NAME = {
     "Qwen/Qwen2.5-Math-7B-Instruct": "Qwen2.5-Math-7B-Instruct",
     "PRIME-RL/Eurus-2-7B-PRIME": "Eurus-2-7B-PRIME",
     "NovaSky-AI/Sky-T1-32B-Preview": "Sky-T1-32B-Preview",
+    "bespokelabs/Stratos-R1-checkpoint-100": "NovaSky-AI/Sky-T1-32B-Preview",  # to give same eval and prompt
     "openai/o1-mini": "o1-mini",
     "openai/o1-preview": "o1-preview",  
     "openai/gpt-4o-mini": "gpt-4o-mini",
