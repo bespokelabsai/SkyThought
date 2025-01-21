@@ -9,11 +9,6 @@ from multiprocessing import Manager
 import re
 
 
-import os
-os.environ['DEEPSEEK_API_KEY'] = 'sk-df93165a277a4722934b444d2111015b'
-# os.environ['DEEPSEEK_API_KEY'] = 'sk-d16193552178498380207df305f8e371'
-
-
 SKY_T1_FIXED = """
 Your role as an assistant involves thoroughly exploring questions through a systematic long thinking process 
 before providing the final precise and accurate solutions. This requires engaging in a comprehensive cycle of 
