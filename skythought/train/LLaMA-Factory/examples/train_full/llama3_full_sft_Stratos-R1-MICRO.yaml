@@ -32,4 +32,4 @@ bf16: true
 ddp_timeout: 180000000
 
 report_to: wandb
-run_name: Sky-T1
+run_name: Stratos-R1-MICRO
