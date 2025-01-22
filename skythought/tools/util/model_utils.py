@@ -124,7 +124,7 @@ Now, begin with the [ASSESS] action for the following task:
         {final formatted, precise, and clear solution} \
         <|end_of_solution|> \
         Now, try to solve the following question through the above guidelines:",
-    "Stratos-R1-Micro-Qwen": "Your role as an assistant involves thoroughly exploring questions through a systematic long \
+    "bespokelabs/Stratos-R1-MICRO-QWEN": "Your role as an assistant involves thoroughly exploring questions through a systematic long \
         thinking process before providing the final precise and accurate solutions. This requires \
         engaging in a comprehensive cycle of analysis, summarizing, exploration, reassessment, reflection, \
         backtracing, and iteration to develop well-considered thinking process. \
@@ -143,7 +143,7 @@ Now, begin with the [ASSESS] action for the following task:
         {final formatted, precise, and clear solution} \
         <|end_of_solution|> \
         Now, try to solve the following question through the above guidelines:",
-    "Stratos-R1-MICRO-QWEN-checkpoint-200": "Your role as an assistant involves thoroughly exploring questions through a systematic long \
+    "bespokelabs/Stratos-R1-MICRO-QWEN-checkpoint-200": "Your role as an assistant involves thoroughly exploring questions through a systematic long \
         thinking process before providing the final precise and accurate solutions. This requires \
         engaging in a comprehensive cycle of analysis, summarizing, exploration, reassessment, reflection, \
         backtracing, and iteration to develop well-considered thinking process. \
@@ -162,7 +162,7 @@ Now, begin with the [ASSESS] action for the following task:
         {final formatted, precise, and clear solution} \
         <|end_of_solution|> \
         Now, try to solve the following question through the above guidelines:",
-    "Stratos-R1-Micro-Llama": "Your role as an assistant involves thoroughly exploring questions through a systematic long \
+    "bespokelabs/Stratos-R1-Micro-Llama": "Your role as an assistant involves thoroughly exploring questions through a systematic long \
         thinking process before providing the final precise and accurate solutions. This requires \
         engaging in a comprehensive cycle of analysis, summarizing, exploration, reassessment, reflection, \
         backtracing, and iteration to develop well-considered thinking process. \
