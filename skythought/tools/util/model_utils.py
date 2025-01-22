@@ -6,6 +6,7 @@ SYSTEM_PROMPT = {
     "Qwen/Qwen2.5-7B-Instruct": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.",
     "Qwen/Qwen2.5-1.5B-Instruct": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.",
     "Qwen/Qwen2.5-Math-7B-Instruct": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.",
+    "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B": "You are a helpful and harmless assistant. You are DeepSeek R1 developed by DeepSeek. You should think step-by-step.",
     "PRIME-RL/Eurus-2-7B-PRIME": """When tackling complex reasoning tasks, you have access to the following actions. Use them as needed to progress through your thought process. After each action, determine and state the next most appropriate action to take.
 
 Actions:
@@ -196,6 +197,7 @@ MODEL_TO_NAME = {
     "Qwen/Qwen2.5-7B-Instruct": "Qwen2.5-7B-Instruct",
     "Qwen/Qwen2.5-1.5B-Instruct": "Qwen2.5-1.5B-Instruct",
     "Qwen/Qwen2.5-Math-7B-Instruct": "Qwen2.5-Math-7B-Instruct",
+    ""
     "PRIME-RL/Eurus-2-7B-PRIME": "Eurus-2-7B-PRIME",
     "NovaSky-AI/Sky-T1-32B-Preview": "Sky-T1-32B-Preview",
     "bespokelabs/Stratos-R1-checkpoint-100": "Stratos-R1-checkpoint-100",
@@ -210,4 +212,5 @@ MODEL_TO_NAME = {
     "meta-llama/Llama-3.2-1B-Instruct": "Llama-3.2-1B-Instruct",
     "meta-llama/Meta-Llama-3-8B-Instruct": "Meta-Llama-3-8B-Instruct",
     "ryanmarten/Sky-T1-32B-Preview-5k-1-epoch": "Sky-T1-32B-Preview",
+    "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B": "DeepSeek-R1-Distill-Qwen-7B",
 }
