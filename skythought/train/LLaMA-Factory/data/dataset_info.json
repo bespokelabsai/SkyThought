@@ -674,5 +674,33 @@
       "user_tag": "user",
       "assistant_tag": "assistant"
     }
+  },
+  "Stratos-17k": {
+    "hf_hub_url": "mlfoundations-dev/Bespoke-Stratos-17k",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "system": "system"
+    },
+    "tags": {
+      "role_tag": "from",
+      "content_tag": "value",
+      "user_tag": "user",
+      "assistant_tag": "assistant"
+    }
+  },
+  "Stratos-35k": {
+    "hf_hub_url": "mlfoundations-dev/Bespoke-Stratos-35k",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "system": "system"
+    },
+    "tags": {
+      "role_tag": "from",
+      "content_tag": "value",
+      "user_tag": "user",
+      "assistant_tag": "assistant"
+    }
   }
 }
