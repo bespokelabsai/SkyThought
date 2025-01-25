@@ -18,7 +18,7 @@ preprocessing_num_workers: 16
 ### output
 output_dir: saves/DCFT-Stratos-Verified-114k-7B
 logging_steps: 1
-save_steps: 100
+save_steps: 200
 plot_loss: true
 
 ### train
