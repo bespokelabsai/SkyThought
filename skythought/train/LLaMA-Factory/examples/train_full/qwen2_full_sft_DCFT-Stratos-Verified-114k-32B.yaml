@@ -16,7 +16,7 @@ overwrite_cache: true
 preprocessing_num_workers: 16
 
 ### output
-output_dir: saves/DCFT-Stratos-Verified-114k-7B/full/original
+output_dir: saves/DCFT-Stratos-Verified-114k-32B/full/original
 logging_steps: 1
 save_steps: 200
 plot_loss: true
@@ -32,4 +32,4 @@ bf16: true
 ddp_timeout: 180000000
 
 report_to: wandb
-run_name: DCFT-Stratos-Verified-114k-7B
+run_name: DCFT-Stratos-Verified-114k-32B
