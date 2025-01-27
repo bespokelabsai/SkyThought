@@ -297,7 +297,7 @@ Now, begin with the [ASSESS] action for the following task:
         {final formatted, precise, and clear solution} \
         <|end_of_solution|> \
         Now, try to solve the following question through the above guidelines:",
-    "mlfoundations-dev/DCFT-Bespoke-Stratos-35k-32b": "Your role as an assistant involves thoroughly exploring questions through a systematic long \
+    "mlfoundations-dev/Bespoke-Stratos-35k-32b": "Your role as an assistant involves thoroughly exploring questions through a systematic long \
         thinking process before providing the final precise and accurate solutions. This requires \
         engaging in a comprehensive cycle of analysis, summarizing, exploration, reassessment, reflection, \
         backtracing, and iteration to develop well-considered thinking process. \
@@ -353,5 +353,5 @@ MODEL_TO_NAME = {
     "mlfoundations-dev/Bespoke-Stratos-17k": "Bespoke-Stratos-17k",
     "mlfoundations-dev/Bespoke-Stratos-17k-v2": "Bespoke-Stratos-17k-v2",
     "mlfoundations-dev/DCFT-Stratos-Verified-114k-7B-4gpus": "DCFT-Stratos-Verified-114k-7B-4gpus",
-    "mlfoundations-dev/DCFT-Bespoke-Stratos-35k-32b": "DCFT-Bespoke-Stratos-35k-32b",
+    "mlfoundations-dev/Bespoke-Stratos-35k-32b": "DCFT-Bespoke-Stratos-35k-32b",
 }
