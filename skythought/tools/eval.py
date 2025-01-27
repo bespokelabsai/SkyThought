@@ -24,6 +24,7 @@ def parse_arguments():
     parser.add_argument("--source", type=str, help="Source for the dataset.")
     parser.add_argument("--output_file", required=True, type=str, help="Output file to write results to.")
     parser.add_argument("--temperatures", type=float, nargs="+", default=[0], help="Temperature for sampling.")
+    parser.add_argument("--visible_devices", type=str, help="Comma-separated list of CUDA devices to use (e.g. '0,1,2')")
     return parser.parse_args()
 
 def extract_accuracy_from_output(output):
@@ -63,6 +64,13 @@ def main():
     all_logs = ""
     results = {}
         
+    # Set up environment with CUDA_VISIBLE_DEVICES if specified
+    popen_kwargs = {'stdout': subprocess.PIPE, 'stderr': subprocess.STDOUT, 'text': True}
+    if args.visible_devices:
+        env = os.environ.copy()
+        env["CUDA_VISIBLE_DEVICES"] = args.visible_devices
+        popen_kwargs['env'] = env
+        
     # Run the Python command for each eval and collect logs
     for eval_name in evals:
         command = [
@@ -83,7 +91,7 @@ def main():
         print(f"Running eval {eval_name} with command {command}")
         all_logs += f"\nRunning eval: {eval_name} with command {command}\n"
         try:
-            with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as proc:
+            with subprocess.Popen(command, **popen_kwargs) as proc:
                 output_lines = []
                 for line in proc.stdout:
                     print(line, end="")  # Stream output to the console
